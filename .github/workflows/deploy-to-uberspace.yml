@@ -35,6 +35,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    needs: build  # This line ensures that deploy runs after build
     steps:
       - uses: actions/checkout@v4
 
@@ -44,9 +45,8 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           ARGS: -avrh --delete --exclude=".git" --exclude=".github"
           SOURCE: "dist/"
-          REMOTE_HOST: ${{ secrets.SSH_HOST }}
-          REMOTE_USER: ${{ secrets.SSH_USERNAME }}
+          REMOTE_HOST: ${{ vars.SSH_HOST }}
+          REMOTE_USER: ${{ vars.SSH_USERNAME }}
           TARGET: /var/www/virtual/${{ vars.SSH_USERNAME }}/html
           EXCLUDE: "/dist/, /node_modules/"
           SCRIPT_AFTER: supervisorctl restart express
-   
