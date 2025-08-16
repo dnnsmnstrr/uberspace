@@ -1,0 +1,29 @@
+{
+  "name": "mnstrr-uberspace",
+  "version": "1.0.0",
+  "description": "Configuration for my uberspace server",
+  "keywords": [
+    "asteroid"
+  ],
+  "homepage": "https://github.com/dnnsmnstrr/uberspace#readme",
+  "bugs": {
+    "url": "https://github.com/dnnsmnstrr/uberspace/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dnnsmnstrr/uberspace.git"
+  },
+  "license": "ISC",
+  "author": "dnnsmnstrr",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  }
+}
