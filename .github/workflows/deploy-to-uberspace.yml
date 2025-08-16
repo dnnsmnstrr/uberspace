@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -32,12 +32,6 @@ jobs:
         with:
           name: deploy-files
           path: dist/
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build  # This line ensures that deploy runs after build
-    steps:
-      - uses: actions/checkout@v4
 
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@main
