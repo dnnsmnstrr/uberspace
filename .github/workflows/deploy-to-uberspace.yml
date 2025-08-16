@@ -5,25 +5,48 @@ on:
     branches: [main]
 
 jobs:
-  build-and-deploy:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build server bundle
+        run: npx esbuild src/index.js --bundle --platform=node --outfile=dist/server.bundle.js
+
+      - name: Copy static files
+        run: |
+          mkdir -p dist
+          cp src/index.html dist/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-files
+          path: dist/
+
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy using Rsync
-        uses: burnett01/rsync-deployments@6.0.0
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@main
         with:
-          switches: -avrh --delete --exclude=".git" --exclude=".github"
-          path: src/
-          remote_path: /var/www/virtual/${{ vars.SSH_USERNAME }}/html
-          remote_host: ${{ vars.SSH_HOST }}
-          remote_user: ${{ vars.SSH_USERNAME }}
-          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          remote_key_pass: ${{ secrets.SSH_PRIVATE_KEY_PASS }} # Only needed if you added a passphrase upon creating the SSH key
-
-      - name: Copy express JS file
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ vars.SSH_USERNAME }}@${{ vars.SSH_HOST }} "cp ~/html/index.js ~/node/index.js"
-      - name: Restart supervisord service
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ vars.SSH_USERNAME }}@${{ vars.SSH_HOST }} "sudo supervisorctl restart node"
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: -avrh --delete --exclude=".git" --exclude=".github"
+          SOURCE: "dist/"
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_USERNAME }}
+          TARGET: /var/www/virtual/${{ vars.SSH_USERNAME }}/html
+          EXCLUDE: "/dist/, /node_modules/"
+          SCRIPT_AFTER: supervisorctl restart express
+   
