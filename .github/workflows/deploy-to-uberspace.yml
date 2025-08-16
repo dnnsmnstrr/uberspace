@@ -1,12 +1,15 @@
 name: Deploy to Uberspace
+
 on:
   push:
     branches: [main]
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Deploy using Rsync
         uses: burnett01/rsync-deployments@6.0.0
         with:
@@ -17,3 +20,10 @@ jobs:
           remote_user: ${{ vars.SSH_USERNAME }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
           remote_key_pass: ${{ secrets.SSH_PRIVATE_KEY_PASS }} # Only needed if you added a passphrase upon creating the SSH key
+
+      - name: Copy express JS file
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ vars.SSH_USERNAME }}@${{ vars.SSH_HOST }} "cp ~/html/index.js ~/node/index.js"
+      - name: Restart supervisord service
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ vars.SSH_USERNAME }}@${{ vars.SSH_HOST }} "sudo supervisorctl restart node"
