@@ -22,6 +22,11 @@ jobs:
       - name: Build server bundle
         run: npx esbuild src/index.js --bundle --platform=node --outfile=dist/server.bundle.js
 
+      - name: Copy Swagger UI files
+        run: |
+          mkdir -p dist/swagger-ui
+          cp -r node_modules/swagger-ui-dist/* dist/swagger-ui/
+          
       - name: Copy static files
         run: |
           mkdir -p dist
