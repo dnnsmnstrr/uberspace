@@ -32,8 +32,9 @@ const swaggerOptions = {
 };
 
 const specs = swaggerJsdoc(swaggerOptions);
-app.use("/docs/swagger-ui", express.static(__dirname + '/../dist/swagger-ui'));
+app.use("/docs/swagger-ui", express.static(__dirname + (process.env.NODE_ENV === "production" ? '/swagger-ui' : '/../dist/swagger-ui')));
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
+app.get('/swagger.json', (req, res) => res.json(specs));
 
 // ---------------------------------------------------------------------------
 // Routes
