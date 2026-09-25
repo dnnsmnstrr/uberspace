@@ -41,7 +41,7 @@ Supervisord services (`~/etc/services.d/*.ini`):
 
 | Service | What | Web backend |
 |---|---|---|
-| `express` | This repo's API (`~/html/server.bundle.js`) | `/api` → port 1024, prefix removed |
+| `express` | This repo's API (`~/html/server.bundle.js`) | `/api` → port 1024, prefix removed (only reachable on `mnstrr.uber.space`) |
 | `etherpad` | Etherpad (`~/etherpad`) | `pad.mnstrr.qzz.io` → 9001 |
 | `pocketbase` | PocketBase | `db.mnstrr.uber.space` → 8090 |
 | `vaultwarden` | Vaultwarden | `vault.mnstrr.qzz.io` → 8000 |
