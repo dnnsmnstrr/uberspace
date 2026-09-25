@@ -49,3 +49,17 @@ jobs:
           TARGET: /var/www/virtual/${{ vars.SSH_USERNAME }}/html
           EXCLUDE: "/dist/, /node_modules/"
           SCRIPT_AFTER: supervisorctl restart express
+
+      - name: Build dashboard
+        run: npm run build:dashboard
+
+      # Apache serves /var/www/virtual/<user>/<domain>/ instead of html/ for that domain
+      - name: Deploy dashboard
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: -avrh --delete
+          SOURCE: "build/dashboard/"
+          REMOTE_HOST: ${{ vars.SSH_HOST }}
+          REMOTE_USER: ${{ vars.SSH_USERNAME }}
+          TARGET: /var/www/virtual/${{ vars.SSH_USERNAME }}/${{ vars.SSH_USERNAME }}.uber.space

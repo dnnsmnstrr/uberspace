@@ -1,0 +1,61 @@
+# Homer dashboard for https://mnstrr.uber.space/
+# Docs: https://github.com/bastienwirtz/homer/blob/main/docs/configuration.md
+# Icons: https://fontawesome.com/search?ic=free
+#
+# To add a service: copy an item block below and adjust it.
+# To keep a service private: add `hidden: true` to the item (or to a whole group).
+# Hidden entries are stripped at build time (scripts/build-dashboard.js),
+# so they never reach the published config.yml.
+# Note: this file itself is public in the GitHub repo.
+
+title: "mnstrr"
+subtitle: "perseus.uberspace.de"
+icon: "fas fa-meteor"
+
+header: true
+footer: false
+
+theme: default
+defaults:
+  colorTheme: auto
+
+links:
+  - name: "Source"
+    icon: "fab fa-github"
+    url: "https://github.com/dnnsmnstrr/uberspace"
+    target: "_blank"
+
+services:
+  - name: "Web"
+    icon: "fas fa-globe"
+    items:
+      - name: "Portfolio"
+        icon: "fas fa-user"
+        subtitle: "mnstrr.qzz.io"
+        url: "https://mnstrr.qzz.io/"
+        target: "_blank"
+      - name: "Playground API"
+        icon: "fas fa-code"
+        subtitle: "Swagger docs"
+        url: "https://mnstrr.uber.space/api/docs/"
+        target: "_blank"
+
+  - name: "Tools"
+    icon: "fas fa-toolbox"
+    items:
+      - name: "Etherpad"
+        icon: "fas fa-file-pen"
+        subtitle: "Collaborative notes"
+        url: "https://pad.mnstrr.qzz.io/"
+        target: "_blank"
+      - name: "PocketBase"
+        icon: "fas fa-database"
+        subtitle: "Database admin"
+        url: "https://db.mnstrr.uber.space/_/"
+        target: "_blank"
+      - name: "Vaultwarden"
+        icon: "fas fa-key"
+        subtitle: "Password manager"
+        url: "https://vault.mnstrr.qzz.io/"
+        target: "_blank"
+        hidden: true
